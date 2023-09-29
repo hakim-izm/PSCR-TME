@@ -4,6 +4,7 @@
 #include <chrono>
 #include <vector>
 #include <utility>
+#include "hashmap.h"
 
 // Fonction qui récupère le nombres d'occurences d'un mot dans le vecteur vec
 // retourne le nombre de mots

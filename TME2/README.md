@@ -28,3 +28,12 @@ Compte du mot "war" : 298 mots.
 Compte du mot "peace" : 114 mots.
 Compte du mot "toto" : 0 mots.
 ```
+
+## Question 4
+
+Nous pouvons penser que la complexité algorithmique pour ce programme est très élevée car nous effectuons un parcours intégral du vecteur comportant les mots à chaque lecture de mots.
+
+On aurait pu utiliser une HashMap à la place en stockant en clef le mot et en valeur son nombre d'occurences.
+
+## Question 5
+
