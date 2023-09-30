@@ -64,6 +64,16 @@ namespace pr {
         size_t size() const {
             return buckets.size();
         }
+
+        // get Begin
+        auto begin() const {
+            return buckets.begin();
+        }
+
+        // get End
+        auto end() const {
+            return buckets.end();
+        }
     };
 
     

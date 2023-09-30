@@ -115,6 +115,26 @@ int main () {
 	cout << "Compte du mot \"peace\" : " << ((wordsMap.get("peace") != nullptr) ? *wordsMap.get("peace") : 0) << " mots." << endl;
 	cout << "Compte du mot \"toto\" : " << ((wordsMap.get("toto") != nullptr) ? *wordsMap.get("toto") : 0) << " mots." << endl;
 
+	// Initalisation du vecteur de la question 7
+	vector<pair<string, int>> wordsVector;
+
+	// Copie des entrées dans la table de hash
+	// Parcours des buckets
+	for(auto it_bucket = wordsMap.begin(); it_bucket != wordsMap.end(); ++it_bucket){
+		// Parcours des forward_list<Entry> de chaque bucket
+		for(auto it_fwdlst = it_bucket->begin(); it_fwdlst != it_bucket->end(); ++it_fwdlst){
+			// Ajout de l'entrée dans le vecteur
+			wordsVector.push_back(make_pair(it_fwdlst->key, it_fwdlst->value));
+		}
+	}
+
+	// question 8 : tri du vecteur par ordre décroissant du nombre d'occurences
+	sort(wordsVector.begin(), wordsVector.end(), [](const pair<string, int> & a, const pair<string, int> & b) -> bool { return a.second > b.second; });
+	cout << "Les 10 mots les plus fréquents : " << endl;
+	for(size_t i=0; i<10; ++i){
+		cout << wordsVector.at(i).first << " : " << wordsVector.at(i).second << " occurrences." << endl;
+	}
+
     return 0;
 }
 

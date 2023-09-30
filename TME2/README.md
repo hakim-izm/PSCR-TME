@@ -42,3 +42,24 @@ Table de hash implémentée dans `hashmap.h`.
 ## Question 6
 
 On retrouve bien le même nombre de mots pour "war", "peace" et "toto" en passant par la hashmap.
+
+## Question 7
+
+Pour la copie des entrées de la table de hash, nous avons parcouru les buckets et dans ce parcours, nous avons parcouru les listes chaînées pour copier les entrées dans le nouveau vecteur.
+
+## Question 8
+
+Les 10 mots les plus utilisés sont :
+
+```
+the : 34562 occurrences.
+and : 22148 occurrences.
+to : 16709 occurrences.
+of : 14990 occurrences.
+a : 10513 occurrences.
+he : 9809 occurrences.
+in : 8800 occurrences.
+his : 7965 occurrences.
+that : 7806 occurrences.
+was : 7327 occurrences.
+```
