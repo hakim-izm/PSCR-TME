@@ -6,11 +6,12 @@ namespace pr {
     class HashMap{
 
         class Entry {
-            const K key;
-            V value;
+            public:
+                const K key;
+                V value;
 
-            // Ctor
-            Entry(const K key, V value): key(key), value(value) {};
+                // Ctor
+                Entry(const K key, V value): key(key), value(value) {};
         };
     
         std::vector<std::forward_list<Entry>> buckets;
@@ -19,21 +20,12 @@ namespace pr {
         // CONSTRUCTEURS
 
         // Ctor
-        HashMap();
+        HashMap(){}
 
         // Ctor
         HashMap(size_t size) {
-            for(int i=0; i< size; ++i){
-                vec.at(i) = new [] std::forward_list<Entry>;
-            }
-        }
-
-        // DESTRUCTEUR
-
-        // Dtor
-        ~HashMap(){
-            for(int i=0; i< size; ++i){
-                delete [] vec.at(i);
+            for(size_t i=0; i<size; ++i){
+                buckets.push_back(std::forward_list<Entry>());
             }
         }
 
@@ -42,10 +34,10 @@ namespace pr {
         // get Value
         V* get(const K& key){
             size_t h = std::hash<K>()(key);
-            size_t target = h % bucket_size;
+            size_t target = h % buckets.size();
             for(Entry &ent : buckets[target]) {
                 if(ent.key == key)
-                    return ent.value;
+                    return &ent.value;
             }
             return nullptr;
         }
@@ -55,7 +47,7 @@ namespace pr {
         // retourne false si on a réalisé une insertion (clef pas encore dans la table)
         bool put(const K& key, const V& value){
             size_t h = std::hash<K>()(key);
-            size_t target = h % bucket_size;
+            size_t target = h % buckets.size();
             // parcours des buckets (recherche si un bucket a pour clef : key)
             for(Entry &ent : buckets[target]) {
                 if(ent.key == key){ // s'il existe déjà une entrée avec key pour clef
@@ -65,6 +57,7 @@ namespace pr {
             }
             // ajout de la nouvelle entrée pour key non présente dans la table dans le bucket adéquat (bon hash) ajout ds forward list
             buckets[target].push_front(Entry(key, value));
+            return false;
         }
 
         // get Size

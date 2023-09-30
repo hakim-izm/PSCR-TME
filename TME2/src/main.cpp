@@ -43,6 +43,9 @@ int main () {
 	// Vecteur qui contient les mots déjà lus avec leur nombre d'occurences
 	vector<pair<string, int>> readWords;
 
+	// HashMap comportant les mots (key : mot, value : nb d'occurences)
+	pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
+
 	ifstream input = ifstream("./tmp/WarAndPeace.txt");
 
 	auto start = steady_clock::now();
@@ -59,18 +62,34 @@ int main () {
 		// passe en lowercase
 		transform(word.begin(),word.end(),word.begin(),::tolower);
 
+		// UTILISATION HASHMAP
+		// Vérification si le mot est déjà lu et récupération de son nombre d'occurences
+		int wordCount;
+		if (wordsMap.get(word) != nullptr) { // le mot est dans la table
+			wordCount = *wordsMap.get(word);
+		} else { // le mot n'est pas dans la table
+			wordCount = 0;
+		}
+
+		// Ajout du mot dans la table (ou mise à jour de l'entrée) avec son nombre d'occurences
+		wordsMap.put(word, ++wordCount);
+
+		// word est maintenant "tout propre"
+		if (nombre_lu % 100 == 0)
+			// on affiche un mot "propre" sur 100
+			cout << nombre_lu << ": "<< word << endl;
+		nombre_lu++;
+
+		// AVANT UTILISATION DU HASHMAP
+		/*
 		// Vérification si le mot est déjà lu (dans le vecteur readWords)
 		if(isWordAlreadyRead(word, &readWords)) {
 			continue; // l'incrément du compte de 1 se fait dans la fonction
 		} else { 
 			// Ajout du nouveau mot dans le vecteur (compte de 1)
 			readWords.push_back(make_pair(word, 1));
-			// word est maintenant "tout propre"
-			if (nombre_lu % 100 == 0)
-				// on affiche un mot "propre" sur 100
-				cout << nombre_lu << ": "<< word << endl;
-			nombre_lu++;
 		}
+		*/
 	}
 	input.close();
 
@@ -84,9 +103,17 @@ int main () {
     cout << "Found a total of " << nombre_lu << " words." << endl;
 
 	// Affichage final pour "war", "peace" et "toto"
-	cout << "Compte du mot \"war\" : " << getCountForWord("war", &readWords) << " mots." << endl;
-	cout << "Compte du mot \"peace\" : " << getCountForWord("peace", &readWords) << " mots." << endl;
-	cout << "Compte du mot \"toto\" : " << getCountForWord("toto", &readWords) << " mots." << endl;
+	// cout << "Compte du mot \"war\" : " << getCountForWord("war", &readWords) << " mots." << endl;
+	// cout << "Compte du mot \"peace\" : " << getCountForWord("peace", &readWords) << " mots." << endl;
+	// cout << "Compte du mot \"toto\" : " << getCountForWord("toto", &readWords) << " mots." << endl;
+
+	// Affichage du nombre de mots distincts depuis le hashmap
+	cout << "Nombre de mots distincts dans la table de hash : " << wordsMap.size() << endl;
+
+	// Affichage final pour "war", "peace" et "toto" AVEC HASHMAP
+	cout << "Compte du mot \"war\" : " << ((wordsMap.get("war") != nullptr) ? *wordsMap.get("war") : 0) << " mots." << endl;
+	cout << "Compte du mot \"peace\" : " << ((wordsMap.get("peace") != nullptr) ? *wordsMap.get("peace") : 0) << " mots." << endl;
+	cout << "Compte du mot \"toto\" : " << ((wordsMap.get("toto") != nullptr) ? *wordsMap.get("toto") : 0) << " mots." << endl;
 
     return 0;
 }

@@ -37,3 +37,8 @@ On aurait pu utiliser une HashMap à la place en stockant en clef le mot et en v
 
 ## Question 5
 
+Table de hash implémentée dans `hashmap.h`.
+
+## Question 6
+
+On retrouve bien le même nombre de mots pour "war", "peace" et "toto" en passant par la hashmap.
