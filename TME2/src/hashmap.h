@@ -14,6 +14,37 @@ namespace pr {
                 Entry(const K key, V value): key(key), value(value) {};
         };
     
+        class iterator {
+            public:
+                std::vector<std::forward_list<Entry>>& buckets; // ref vers table buckets
+                std::forward_list<Entry>* vit; // itérateur dans la table désignant le bucket en cours d'exploration
+                Entry* lit; // point l'élément courant dans la liste
+
+                iterator& operator++() {
+                    // on incrémente d'abord lit
+                    lit++;
+                    // si on est au bout de la liste (lit == null)
+                    if(lit == nullptr){
+                        // on recherche la prochaine case non vide de vit
+                        while(vit == nullptr && vit != vit->end()) {
+                            vit++;
+                        }
+                        // attention au débordement (if)
+                        if(vit != vit->end())
+                            // on met lit en tête de liste
+                            lit = vit->begin();
+                    }
+                }
+
+                bool operator!=(const iterator &other) {
+                    return (lit != other->lit) || (vit != other->vit);
+                }
+
+                Entry & operator*() {
+                    return *lit;
+                }
+        };
+
         std::vector<std::forward_list<Entry>> buckets;
 
     public:
@@ -66,12 +97,12 @@ namespace pr {
         }
 
         // get Begin
-        auto begin() const {
+        iterator begin() const {
             return buckets.begin();
         }
 
         // get End
-        auto end() const {
+        iterator end() const {
             return buckets.end();
         }
     };
