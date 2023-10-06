@@ -38,6 +38,7 @@ bool isWordAlreadyRead(std::string word, std::vector<std::pair<std::string, int>
 
 // Fonction générique qui compte le nb d'éléments entre begin et end
 // Retourne le nb d'éléments entre les itérateurs begin et end
+/*
 template<typename T>
 // typedef T* iterator; impossible avec un template
 // T = iterator
@@ -49,13 +50,30 @@ size_t count(T begin, T end){
 	}
 	return count;
 }
+*/
+
+// Fonction générique qui compte le nb d'éléments égaux à la valeur souhaitée
+// Retourne ce dit nb d'éléments
+template<typename T, typename U>
+size_t count_if_equal (T begin, T end, const U& val){
+	size_t count=0;
+	while(begin!=end){
+		if(*begin == val)
+			count++;
+		begin++;
+	}
+	return count;
+}
 
 int main () {
 	using namespace std;
 	using namespace std::chrono;
 
 	// Vecteur qui contient les mots déjà lus avec leur nombre d'occurences
-	vector<pair<string, int>> readWords;
+	// vector<pair<string, int>> readWords;
+
+	// Vecteur qui contient les mots déjà lus
+	vector<string> readWords;
 
 	// HashMap comportant les mots (key : mot, value : nb d'occurences)
 	// pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
@@ -98,6 +116,7 @@ int main () {
 		
 
 		// AVANT UTILISATION DU HASHMAP
+		/*
 		// Vérification si le mot est déjà lu (dans le vecteur readWords)
 		if(isWordAlreadyRead(word, &readWords)) {
 			continue; // l'incrément du compte de 1 se fait dans la fonction
@@ -105,6 +124,10 @@ int main () {
 			// Ajout du nouveau mot dans le vecteur (compte de 1)
 			readWords.push_back(make_pair(word, 1));
 		}
+		*/
+
+		// Ajout systématique du mots (autorise les doublons)
+		readWords.push_back(word);
 	}
 	input.close();
 
@@ -133,7 +156,7 @@ int main () {
 	*/
 
 	// Initalisation du vecteur de la question 7
-	vector<pair<string, int>> wordsVector;
+	// vector<pair<string, int>> wordsVector;
 
 	// Copie des entrées dans la table de hash
 	/*
@@ -157,7 +180,10 @@ int main () {
 	*/
 
 	// Test count
-	cout << "Nb d'éléments de readWords : " << count(readWords.begin(), readWords.end()) << endl;
+	// cout << "Nb d'éléments de readWords : " << count(readWords.begin(), readWords.end()) << endl;
+
+	// Test count_if_equal
+	cout << "Nb d'occurences de 'the' : " << count_if_equal(readWords.begin(), readWords.end(), "the") << endl;
 
     return 0;
 }

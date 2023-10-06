@@ -63,3 +63,18 @@ his : 7965 occurrences.
 that : 7806 occurrences.
 was : 7327 occurrences.
 ```
+
+# PSCR - TME3
+
+## Question 1
+
+Fonction générique `count` implémentée.
+
+## Question 2
+
+Nous avons utilise un `template<typename T, typename U>` avec T pour l'itérateur et U pour le type de l'élément recherché dans le conteneur.
+
+## Question 3
+
+Les fonctions ont été testée et les valeurs retournées sont cohérentes.
+
