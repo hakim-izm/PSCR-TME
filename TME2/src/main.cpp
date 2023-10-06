@@ -36,6 +36,20 @@ bool isWordAlreadyRead(std::string word, std::vector<std::pair<std::string, int>
 	return false;
 }
 
+// Fonction générique qui compte le nb d'éléments entre begin et end
+// Retourne le nb d'éléments entre les itérateurs begin et end
+template<typename T>
+// typedef T* iterator; impossible avec un template
+// T = iterator
+size_t count(T begin, T end){
+	size_t count=0;
+	while(begin!=end){
+		count++;
+		begin++;
+	}
+	return count;
+}
+
 int main () {
 	using namespace std;
 	using namespace std::chrono;
@@ -134,6 +148,9 @@ int main () {
 	for(size_t i=0; i<10; ++i){
 		cout << wordsVector.at(i).first << " : " << wordsVector.at(i).second << " occurrences." << endl;
 	}
+
+	// Test count
+	cout << "Nb d'éléments de readWords : " << count(readWords.begin(), readWords.end()) << endl;
 
     return 0;
 }
