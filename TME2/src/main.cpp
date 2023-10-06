@@ -58,7 +58,7 @@ int main () {
 	vector<pair<string, int>> readWords;
 
 	// HashMap comportant les mots (key : mot, value : nb d'occurences)
-	pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
+	// pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
 
 	ifstream input = ifstream("./tmp/WarAndPeace.txt");
 
@@ -76,6 +76,7 @@ int main () {
 		// passe en lowercase
 		transform(word.begin(),word.end(),word.begin(),::tolower);
 
+		/*
 		// UTILISATION HASHMAP
 		// Vérification si le mot est déjà lu et récupération de son nombre d'occurences
 		int wordCount;
@@ -87,15 +88,16 @@ int main () {
 
 		// Ajout du mot dans la table (ou mise à jour de l'entrée) avec son nombre d'occurences
 		wordsMap.put(word, ++wordCount);
+		*/
 
 		// word est maintenant "tout propre"
 		if (nombre_lu % 100 == 0)
 			// on affiche un mot "propre" sur 100
 			cout << nombre_lu << ": "<< word << endl;
 		nombre_lu++;
+		
 
 		// AVANT UTILISATION DU HASHMAP
-		/*
 		// Vérification si le mot est déjà lu (dans le vecteur readWords)
 		if(isWordAlreadyRead(word, &readWords)) {
 			continue; // l'incrément du compte de 1 se fait dans la fonction
@@ -103,7 +105,6 @@ int main () {
 			// Ajout du nouveau mot dans le vecteur (compte de 1)
 			readWords.push_back(make_pair(word, 1));
 		}
-		*/
 	}
 	input.close();
 
@@ -121,6 +122,7 @@ int main () {
 	// cout << "Compte du mot \"peace\" : " << getCountForWord("peace", &readWords) << " mots." << endl;
 	// cout << "Compte du mot \"toto\" : " << getCountForWord("toto", &readWords) << " mots." << endl;
 
+	/*
 	// Affichage du nombre de mots distincts depuis le hashmap
 	cout << "Nombre de mots distincts dans la table de hash : " << wordsMap.size() << endl;
 
@@ -128,11 +130,13 @@ int main () {
 	cout << "Compte du mot \"war\" : " << ((wordsMap.get("war") != nullptr) ? *wordsMap.get("war") : 0) << " mots." << endl;
 	cout << "Compte du mot \"peace\" : " << ((wordsMap.get("peace") != nullptr) ? *wordsMap.get("peace") : 0) << " mots." << endl;
 	cout << "Compte du mot \"toto\" : " << ((wordsMap.get("toto") != nullptr) ? *wordsMap.get("toto") : 0) << " mots." << endl;
+	*/
 
 	// Initalisation du vecteur de la question 7
 	vector<pair<string, int>> wordsVector;
 
 	// Copie des entrées dans la table de hash
+	/*
 	// Parcours des buckets
 	for(auto it_bucket = wordsMap.begin(); it_bucket != wordsMap.end(); ++it_bucket){
 		// Parcours des forward_list<Entry> de chaque bucket
@@ -141,13 +145,16 @@ int main () {
 			wordsVector.push_back(make_pair(it_fwdlst->key, it_fwdlst->value));
 		}
 	}
+	*/
 
 	// question 8 : tri du vecteur par ordre décroissant du nombre d'occurences
+	/*
 	sort(wordsVector.begin(), wordsVector.end(), [](const pair<string, int> & a, const pair<string, int> & b) -> bool { return a.second > b.second; });
 	cout << "Les 10 mots les plus fréquents : " << endl;
 	for(size_t i=0; i<10; ++i){
 		cout << wordsVector.at(i).first << " : " << wordsVector.at(i).second << " occurrences." << endl;
 	}
+	*/
 
 	// Test count
 	cout << "Nb d'éléments de readWords : " << count(readWords.begin(), readWords.end()) << endl;
