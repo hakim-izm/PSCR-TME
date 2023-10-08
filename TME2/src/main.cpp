@@ -70,13 +70,14 @@ int main () {
 	using namespace std::chrono;
 
 	// Vecteur qui contient les mots déjà lus avec leur nombre d'occurences
-	// vector<pair<string, int>> readWords;
+	vector<pair<string, int>> readWords;
+	vector<pair<string, int>> destinationVector;
 
 	// Vecteur qui contient les mots déjà lus
-	vector<string> readWords;
+	// vector<string> readWords;
 
 	// HashMap comportant les mots (key : mot, value : nb d'occurences)
-	// pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
+	pr::HashMap<string, int> wordsMap = pr::HashMap<string, int>(600000);
 
 	ifstream input = ifstream("./tmp/WarAndPeace.txt");
 
@@ -94,7 +95,6 @@ int main () {
 		// passe en lowercase
 		transform(word.begin(),word.end(),word.begin(),::tolower);
 
-		/*
 		// UTILISATION HASHMAP
 		// Vérification si le mot est déjà lu et récupération de son nombre d'occurences
 		int wordCount;
@@ -102,18 +102,15 @@ int main () {
 			wordCount = *wordsMap.get(word);
 		} else { // le mot n'est pas dans la table
 			wordCount = 0;
+			// word est maintenant "tout propre"
+			if (nombre_lu % 100 == 0)
+				// on affiche un mot "propre" sur 100
+				cout << nombre_lu << ": "<< word << endl;
+			nombre_lu++;
 		}
 
 		// Ajout du mot dans la table (ou mise à jour de l'entrée) avec son nombre d'occurences
 		wordsMap.put(word, ++wordCount);
-		*/
-
-		// word est maintenant "tout propre"
-		if (nombre_lu % 100 == 0)
-			// on affiche un mot "propre" sur 100
-			cout << nombre_lu << ": "<< word << endl;
-		nombre_lu++;
-		
 
 		// AVANT UTILISATION DU HASHMAP
 		/*
@@ -126,8 +123,8 @@ int main () {
 		}
 		*/
 
-		// Ajout systématique du mots (autorise les doublons)
-		readWords.push_back(word);
+		// Ajout systématique du mot (autorise les doublons)
+		// readWords.push_back(word);
 	}
 	input.close();
 
@@ -183,7 +180,19 @@ int main () {
 	// cout << "Nb d'éléments de readWords : " << count(readWords.begin(), readWords.end()) << endl;
 
 	// Test count_if_equal
-	cout << "Nb d'occurences de 'the' : " << count_if_equal(readWords.begin(), readWords.end(), "the") << endl;
+	// cout << "Nb d'occurences de 'the' : " << count_if_equal(readWords.begin(), readWords.end(), "the") << endl;
+
+	// TME3 - question 5 : copie des entrées de la table de hash dans le vecteur destinationVector
+	// Parcours des buckets
+	/*
+	for(pr::HashMap<string,int>::iterator it = wordsMap.begin(); it != wordsMap.end(); ++it){
+		cout << (*it).key << " : " << (*it).value << endl;
+		// Ajout de l'entrée dans le vecteur
+		destinationVector.push_back(make_pair((*it).key, (*it).value));
+	}
+	*/
+
+	// Problème : boucle infinie : ++lit ne semble pas fonctionner
 
     return 0;
 }
