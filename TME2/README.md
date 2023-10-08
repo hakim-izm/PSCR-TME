@@ -78,3 +78,6 @@ Nous avons utilise un `template<typename T, typename U>` avec T pour l'itérateu
 
 Les fonctions ont été testée et les valeurs retournées sont cohérentes.
 
+## Question 4
+
+La sous-classe `iterator` a été implémentée dans la classe `HashMap`.

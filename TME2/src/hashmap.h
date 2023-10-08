@@ -17,23 +17,28 @@ namespace pr {
         class iterator {
             public:
                 std::vector<std::forward_list<Entry>>& buckets; // ref vers table buckets
-                std::forward_list<Entry>* vit; // itérateur dans la table désignant le bucket en cours d'exploration
-                Entry* lit; // point l'élément courant dans la liste
+                std::vector<std::forward_list<Entry>>::iterator vit; // itérateur dans la table désignant le bucket en cours d'exploration
+                std::forward_list<Entry>::iterator lit; // point l'élément courant dans la liste
+
+                // Ctor
+                iterator(std::vector<std::forward_list<Entry>>& buckets, std::vector<std::forward_list<Entry>>::iterator vit, std::forward_list<Entry>::iterator lit): buckets(buckets), vit(vit), lit(lit) {}
 
                 iterator& operator++() {
                     // on incrémente d'abord lit
                     lit++;
-                    // si on est au bout de la liste (lit == null)
-                    if(lit == nullptr){
+                    // si on est au bout de la liste (lit == vit->end())
+                    if(lit == vit->end()){
                         // on recherche la prochaine case non vide de vit
-                        while(vit == nullptr && vit != vit->end()) {
+                        while(vit->empty() && vit != vit->end()) {
                             vit++;
                         }
                         // attention au débordement (if)
-                        if(vit != vit->end())
+                        if(vit != buckets->end())
                             // on met lit en tête de liste
                             lit = vit->begin();
                     }
+
+                    return *this;
                 }
 
                 bool operator!=(const iterator &other) {
