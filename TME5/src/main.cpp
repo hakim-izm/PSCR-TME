@@ -7,9 +7,15 @@
 #include <limits>
 #include <random>
 
+#include "Job.h"
+
 using namespace std;
 using namespace pr;
 
+// NOMBRE DE CPU/THREADS
+const int NBCPU = 8;
+const int NBTHREADSPERCPU = 2;
+const int NBTHREADS = NBCPU * NBTHREADSPERCPU;
 
 void fillScene(Scene & scene, default_random_engine & re) {
 	// Nombre de spheres (rend le probleme plus dur)
@@ -125,9 +131,16 @@ int main () {
 	// Les couleurs des pixels dans l'image finale
 	Color * pixels = new Color[scene.getWidth() * scene.getHeight()];
 
+	// PARALLELISME
+	int nbJobs = scene.getWidth() * scene.getHeight(); // nbJobs = nbPixels
+	Pool pool(nbJobs/NBTHREADS); // 1 pool : 16 jobs (car CPU 16 threads)
+	Barrier b(nbJobs);
+	pool_start(NBTHREADS);
+
 	// pour chaque pixel, calculer sa couleur
 	for (int x =0 ; x < scene.getWidth() ; x++) {
 		for (int  y = 0 ; y < scene.getHeight() ; y++) {
+			/*
 			// le point de l'ecran par lequel passe ce rayon
 			auto & screenPoint = screen[y][x];
 			// le rayon a inspecter
@@ -147,9 +160,12 @@ int main () {
 				// mettre a jour la couleur du pixel dans l'image finale.
 				pixel = finalcolor;
 			}
-
+			*/
+			pool.submit(new PixelJob(x, y, &b, pixels));
 		}
 	}
+	b.waitFor(); //appel bloquant
+	pool.stop();
 
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	    std::cout << "Total time "

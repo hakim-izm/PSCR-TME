@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <mutex>
+#include <condition_variable>
 
 namespace pr {
 
@@ -14,6 +15,8 @@ class Queue {
 	size_t begin;
 	size_t sz;
 	mutable std::mutex m;
+	std::condition_variable cond; // Condition variable
+	bool isBlocking; // Flag blocage
 
 	// fonctions private, sans protection mutex
 	bool empty() const {
@@ -33,7 +36,15 @@ public:
 	}
 	T* pop() {
 		std::unique_lock<std::mutex> lg(m);
-		if (empty()) {
+		// cas : appel bloquant
+		while (empty() && isBlocking) {
+			cond.wait(lg);
+		}
+		if (full() && isBlocking) {
+			cond.notify_all();
+		}
+		// cas : appel non bloquant
+		if(empty() && !isBlocking) {
 			return nullptr;
 		}
 		auto ret = tab[begin];
@@ -44,12 +55,26 @@ public:
 	}
 	bool push(T* elt) {
 		std::unique_lock<std::mutex> lg(m);
-		if (full()) {
+		// cas : appel bloquant
+		while(full() && isBlocking) {
+			cond.wait(lg);
+		}
+		if(empty() && isBlocking){
+			cond.notify_all();
+		}
+		// cas : appel non bloquant
+		if(full() && !isBlocking) {
 			return false;
 		}
 		tab[(begin + sz) % allocsize] = elt;
 		sz++;
 		return true;
+	}
+
+	void setBlocking (bool isBlocking){
+		unique_look lg(m);
+		this->isBlocking = isBlocking;
+		cond.notify_all(); // débloque ce qui est déjà bloqué
 	}
 	~Queue() {
 		// ?? lock a priori inutile, ne pas detruire si on travaille encore avec
