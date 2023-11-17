@@ -3,7 +3,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <vector>
-
+#include <sys/mman.h>
+#include <fcntl.h>
 
 using namespace std;
 using namespace pr;
@@ -24,6 +25,23 @@ void consomateur (Stack<char> * stack) {
 
 int main () {
 	Stack<char> * s = new Stack<char>();
+
+/*
+	const int N = 5; //nb producteurs
+	const int M = 10; //nb consommateurs
+
+	// Mémoire partagée
+	int fd = shm_open("/shm_prod_cons", O_RDWR, 0600);
+	if(fd == -1) {
+		perror("shared memory error");
+		exit(1);
+	}
+
+	if(ftruncate(fd, /*size ?*//*) == -1){
+		perror("ftruncate error");
+		exit(1);
+	}
+*/
 
 	pid_t pp = fork();
 	if (pp==0) {
