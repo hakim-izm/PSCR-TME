@@ -47,7 +47,7 @@ Voir fonction `question1()` dans `main.cpp`.
 
 Les mutex implémentés sur le Compte nous permettent d'éviter les data races car ce sont les seuls objets que l'on modifie.
 
-Afin que la mise à jour des deux comptes soient atomique, il faudrait bloquer les comptes subissant un crédit ou un débit. Mais il faut faire attention au risque d'interblocage !
+Afin que la mise à jour des deux comptes soit atomique, il faudrait bloquer les comptes subissant un crédit ou un débit. Mais il faut faire attention au risque d'interblocage !
 
 ## Question 3
 
@@ -61,3 +61,24 @@ Nous proposons la stratégie suivante : il faut bloquer les deux comptes sur les
 
 On assiste ici à un cas d'interblocage. En effet, nous bloquons manuellement les comptes avant d'appeler les fonctions `Compte::crediter` et `Compte::debiter` qui eux aussi bloquent le mutex automatiquement. D'où le blocage. Nous utiliserons un `recursive_mutex` à la place
 
+## Question 6
+
+La méthode `Banque::transfert` dans `Banque.cpp` se charge du transfert entre deux comptes en les verrouillant en amont. Cette méthode peut potentiellement conduire à un interblocage si deux threads essaient de verrouiller simultanément les mêmes comptes dans un ordre différent, car chaque thread peut se retrouver bloqué en attendant que l'autre libère son verrou.
+
+Ceci peut arriver si nous avons deux transferts à la suite : (Cpte 1 -> Cpte 2) et (Cpte 2 -> Cpte 1). On a un risque d'interblocage si jamais ce cas arrive. Pour régler ce problème, nous devons faire le verrouillage et le déverrouillage dans le même ordre que précédemment. Nous pouvons utiliser l'index dans le vecteur pour faire ceci.
+
+## Question 7
+
+Le thread chargé de la comptabilité peut effectuer son calcul au moment d'une transaction (entre un débit et un crédit), faussant ainsi le résultat. Cette solution n'est pas satisfaisante avec les synchronisations actuelles.
+
+## Question 8
+
+Ce cas a été observé directement.
+
+## Question 9
+
+L'ajout d'un mutex dans la banque nous permet bien d'éviter les problèmes de comptabilité mais ceci annule la concurrence dans les transferts, on le remarque bien par la différence dans le temps d'exécution.
+
+## Question 10
+
+Pour régler ce problème dans la fonction `Banque::comptabiliser()`, nous avons ajouté une boucle `for` permettant de bloquer tous les comptes avant la boucle `for` principale de la comptabilité et une dernière boucle pour débloquer tous les comptes. Le résultat est satisfaisant : aucune erreur comptable n'est signalée dans la console et le temps d'exécution est bien meilleur que dans la question 9.
