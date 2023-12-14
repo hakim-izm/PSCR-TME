@@ -77,7 +77,7 @@ Ce cas a été observé directement.
 
 ## Question 9
 
-L'ajout d'un mutex dans la banque nous permet bien d'éviter les problèmes de comptabilité mais ceci annule la concurrence dans les transferts, on le remarque bien par la différence dans le temps d'exécution.
+L'ajout d'un mutex dans la banque nous permet d'éviter les problèmes de comptabilité mais ceci annule la concurrence dans les transferts, on le remarque bien par la différence dans le temps d'exécution.
 
 ## Question 10
 
